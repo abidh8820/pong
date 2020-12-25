@@ -1,9 +1,8 @@
 #define W_w 1366
-#define W_h 768
+#define W_h 683
 
 #define W_wh 782
-#define W_hh 384
-#define paddle_speed = 200
+#define W_hh 391
 
 sf::RenderWindow window(sf::VideoMode(W_w, W_h), "Pong", sf::Style::Titlebar);
 sf::Font font;
@@ -40,7 +39,7 @@ void init_state() {
     if (!font.loadFromFile("arial.ttf")) {
     }
     text.setFont(font);             // setiing the default font
-    text.setString("Hello pong!");  // giving the text to print
+    text.setString("ponge beta");  // giving the text to print
     text.setCharacterSize(50);
     text.setFillColor(sf::Color::White);
     text.setPosition(W_w * .4, W_h*.45);
