@@ -47,7 +47,7 @@ void game_state() {}
 
 inline void ovo() { // one vs one game 
     while (true) {
-        checkclose(); // checks wheather window is closed by the window menu button
+        checkclose(); // checks whether window is closed by the window menu button
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             p1y -= 10;
@@ -67,8 +67,8 @@ inline void ovo() { // one vs one game
         }
 
         if (by == 0) iy *= -1;
-        if (by == W_h - 5) iy *= -1;
-        if (bx < 0) {
+        if (by == W_h - 5) iy *= -1; // changing direction in y axis
+        if (bx < 0) { //checking whether to add score
             player2score++;
             bx = W_wh;
             by = W_hh;
