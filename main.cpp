@@ -1,7 +1,7 @@
-#include <SFML/Window/Event.hpp>
 #include <bits/stdc++.h>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
 #include "pong.h"
@@ -140,14 +140,21 @@ int main() {
         }
         int idx = 0;
         while (true) {
-            menu_draw(idx), checkclose();
+            menu_draw(idx);
             sf::Event event;
-
-            while(window.pollEvent(event)){
-                if(event.key.code==sf::Keyboard::Up) idx = (idx+1)%3;
-                else if(event.key.code==sf::Keyboard::Down) idx = (idx-1+3)%3;
+            while (window.pollEvent(event)) {
+                checkclose();
+                if (event.type == sf::Event::KeyPressed) {
+                    if (event.key.code == sf::Keyboard::Up){
+                        idx=(idx+2)%3;
+                    }
+                    else if (event.key.code == sf::Keyboard::Down){
+                        idx = (idx+1)%3;
+                    }
+                }
                 break;
             }
+            checkclose();
         }
     }
 }
