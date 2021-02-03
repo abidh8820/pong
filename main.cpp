@@ -1,6 +1,8 @@
+#include <SFML/Window/Event.hpp>
 #include <bits/stdc++.h>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Keyboard.hpp>
 
 #include "pong.h"
 using namespace std;
@@ -20,7 +22,7 @@ inline void checkclose() {
         }
     }
 }
-void score1(std::string p1s) { //prints p1's score
+void score1(std::string p1s) {  // prints p1's score
     sf::Text score;
 
     if (!font.loadFromFile("arial.ttf")) {
@@ -32,7 +34,7 @@ void score1(std::string p1s) { //prints p1's score
     score.setFillColor(sf::Color::White);
     window.draw(score);
 }
-void score2(std::string p2s) { // prints p2's score
+void score2(std::string p2s) {  // prints p2's score
     sf::Text score;
     if (!font.loadFromFile("arial.ttf")) {
     }
@@ -45,19 +47,20 @@ void score2(std::string p2s) { // prints p2's score
 }
 void game_state() {}
 
-inline void ovo() { // one vs one game 
+inline void ovo() {  // one vs one game
     while (true) {
-        checkclose(); // checks whether window is closed by the window menu button
+        checkclose();  // checks whether window is closed by the window menu
+                       // button
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             p1y -= 10;
             p1y = max(0, p1y);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            p1y += 10;                                             //changing
+            p1y += 10;  // changing
             p1y = min(p1y, W_h - 85);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {       // positions.
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {  // positions.
             p2y -= 10;
             p2y = max(0, p2y);
         }
@@ -67,8 +70,8 @@ inline void ovo() { // one vs one game
         }
 
         if (by == 0) iy *= -1;
-        if (by == W_h - 5) iy *= -1; // changing direction in y axis
-        if (bx < 0) { //checking whether to add score
+        if (by == W_h - 5) iy *= -1;  // changing direction in y axis
+        if (bx < 0) {                 // checking whether to add score
             player2score++;
             bx = W_wh;
             by = W_hh;
@@ -79,7 +82,8 @@ inline void ovo() { // one vs one game
             bx = W_wh;
             by = W_hh;
         }
-        if (player1score == 2 || player2score == 2) { // if one of the players hits the score limit
+        if (player1score == 2 ||
+            player2score == 2) {  // if one of the players hits the score limit
             sf::Text win;
             if (player1score == 2)
                 win.setString("player 1 wins");
@@ -91,8 +95,10 @@ inline void ovo() { // one vs one game
             win.setCharacterSize(40);
             win.setFont(font);
             win.setPosition(W_w * .4, W_h * .45);
-        
-            while(!sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) { //declaring the winner until the next game is on
+
+            while (!sf::Keyboard::isKeyPressed(
+                sf::Keyboard::Return)) {  // declaring the winner until the next
+                                          // game is on
                 checkclose();
                 window.clear(sf::Color::Black);
                 window.draw(win);
@@ -103,19 +109,22 @@ inline void ovo() { // one vs one game
             return;
         }
         if (bx >= 10 && bx <= 21 && by >= p1y && by <= p1y + 85)
-            ix = abs(ix);                          //changing the direction in x axis
-        else if (bx >= W_w - 25 && bx <= W_w - 10 && by >= p2y && //x axis but opposite 
+            ix = abs(ix);  // changing the direction in x axis
+        else if (bx >= W_w - 25 && bx <= W_w - 10 &&
+                 by >= p2y &&  // x axis but opposite
                  by <= p2y + 85)
             ix = -abs(ix);
         bx += ix * bi, by += iy * bi;
 
-        by = max(by, 0);                  //setting limit for y , thus ball doesnt go beyond the window
+        by = max(
+            by,
+            0);  // setting limit for y , thus ball doesnt go beyond the window
         by = min(by, W_h - 5);
 
         window.clear(sf::Color::Black);
         score1(to_string(player1score));
         score2(to_string(player2score));
-        draw(p1y, p2y, bx, by);              //drawing the game state
+        draw(p1y, p2y, bx, by);  // drawing the game state
     }
 }
 int main() {
@@ -129,7 +138,16 @@ int main() {
             init_state();
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) break;
         }
-        while(true)ovo();
-          
+        int idx = 0;
+        while (true) {
+            menu_draw(idx), checkclose();
+            sf::Event event;
+
+            while(window.pollEvent(event)){
+                if(event.key.code==sf::Keyboard::Up) idx = (idx+1)%3;
+                else if(event.key.code==sf::Keyboard::Down) idx = (idx-1+3)%3;
+                break;
+            }
+        }
     }
 }

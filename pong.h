@@ -26,7 +26,25 @@ void ball_draw(int bx, int by) {
     ball.setFillColor(sf::Color::White);
     window.draw(ball);
 }
+void menu_draw(int idx){
+    sf::Text text[3];
+    if (!font.loadFromFile("arial.ttf")) {
+    }
+    text[1].setString("Two vs Two");  // giving the text to print
+    text[0].setString("One vs One");  // giving the text to print
+    text[2].setString("vs Computer");  // giving the text to print
+    text[idx].setFillColor(sf::Color::Red);
+    window.clear(sf::Color::Black);
 
+    for(int i=0;i<3;i++){
+    text[i].setFont(font);             // setiing the default font
+    text[i].setCharacterSize(50);
+    text[i].setPosition(W_w *.5 -50, 160+i*100);
+    if(idx!=i) text[i].setFillColor(sf::Color::White);
+    window.draw(text[i]);
+    }
+    window.display();
+}
 void draw(int p1y, int p2y, int bx, int by) {
     paddle1_draw(p1y);
     paddle2_draw(p2y);
