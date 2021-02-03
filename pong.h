@@ -4,7 +4,7 @@
 #define W_wh 782
 #define W_hh 391
 
-sf::RenderWindow window(sf::VideoMode(W_w, W_h), "Pong", sf::Style::Titlebar);
+sf::RenderWindow window(sf::VideoMode(W_w, W_h), "Pong");
 sf::Font font;
 
 void paddle1_draw(int p1y) {

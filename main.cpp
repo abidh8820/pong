@@ -1,3 +1,5 @@
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/WindowStyle.hpp>
 #include <bits/stdc++.h>
 
 #include <SFML/Graphics.hpp>
@@ -6,6 +8,15 @@
 
 #include "pong.h"
 using namespace std;
+
+inline void checkclose(){
+            sf::Event evnt;
+        while(window.pollEvent(evnt)){
+            if(evnt.type==sf::Event::Closed){
+                window.close();
+            }
+        }
+}
 
 void score1(std::string p1s) {
     sf::Text score;
@@ -47,27 +58,18 @@ int main() {
 
     bool fx = false;
     while (window.isOpen()) {
-        sf::Event evnt;
-
+        checkclose();
         while (true) {
+            checkclose();
             init_state();
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) break;
         }
 
         while (true) {
+            
         f:
 
-            while (false) {
-                window.clear(sf::Color::Black);
-                score1(to_string(player1score));
-                score2(to_string(player2score));
-                draw(p1y, p2y, bx, by);
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
-                    fx = false;
-                    break;
-                }
-            }
+            checkclose();
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
                 p1y -= 10;
                 p1y = max(0, p1y);
@@ -114,7 +116,9 @@ int main() {
                 win.setPosition(W_w * .4, W_h * .45);
                 player1score = player2score = 0;
 
+                checkclose();
                 while (true) {
+                    checkclose();
                     window.clear(sf::Color::Black);
                     window.draw(win);
                     window.display();
