@@ -95,14 +95,15 @@ inline void ovo() {  // one vs one game
             win.setCharacterSize(40);
             win.setFont(font);
             win.setPosition(W_w * .4, W_h * .45);
-
-            while (!sf::Keyboard::isKeyPressed(
-                sf::Keyboard::Return)) {  // declaring the winner until the next
-                                          // game is on
+            sf::Event vnt;
+            while (window.pollEvent(vnt)) {  // declaring the winner until the next game
                 checkclose();
                 window.clear(sf::Color::Black);
                 window.draw(win);
                 window.display();
+                if (vnt.type == sf::Event::KeyReleased){
+                    if(vnt.key.code==sf::Keyboard::Return)break;
+                }
             }
             player1score = player2score = 0;
             checkclose();
@@ -133,11 +134,6 @@ int main() {
     bool fx = false;
     while (window.isOpen()) {
         checkclose();
-        while (true) {
-            checkclose();
-            init_state();
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) break;
-        }
         int idx = 0;
         while (true) {
             menu_draw(idx);
@@ -145,14 +141,18 @@ int main() {
             while (window.pollEvent(event)) {
                 checkclose();
                 if (event.type == sf::Event::KeyPressed) {
-                    if (event.key.code == sf::Keyboard::Up){
-                        idx=(idx+2)%3;
-                    }
-                    else if (event.key.code == sf::Keyboard::Down){
-                        idx = (idx+1)%3;
+                    if (event.key.code == sf::Keyboard::Up) {
+                        idx = (idx + 2) % 3;
+                    } else if (event.key.code == sf::Keyboard::Down) {
+                        idx = (idx + 1) % 3;
                     }
                 }
-                break;
+
+                if (event.type == sf::Event::KeyReleased) {
+                    if (event.key.code == sf::Keyboard::Return) {
+                        if (idx == 0) ovo();
+                    }
+                }
             }
             checkclose();
         }

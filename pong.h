@@ -27,7 +27,7 @@ void ball_draw(int bx, int by) {
     window.draw(ball);
 }
 void menu_draw(int idx){
-    sf::Text text[3];
+    sf::Text text[4];
     if (!font.loadFromFile("arial.ttf")) {
     }
     text[1].setString("Two vs Two");  // giving the text to print
@@ -36,10 +36,15 @@ void menu_draw(int idx){
     text[idx].setFillColor(sf::Color::Red);
     window.clear(sf::Color::Black);
 
+    text[3].setFont(font);             // setiing the default font
+    text[3].setCharacterSize(100);
+    text[3].setPosition(W_w *.5 -150, 100);
+    text[3].setString("Pong beta");  // giving the text to print
+    window.draw(text[3]);
     for(int i=0;i<3;i++){
     text[i].setFont(font);             // setiing the default font
     text[i].setCharacterSize(50);
-    text[i].setPosition(W_w *.5 -50, 160+i*100);
+    text[i].setPosition(W_w *.5 -50, 360+i*100);
     if(idx!=i) text[i].setFillColor(sf::Color::White);
     window.draw(text[i]);
     }
