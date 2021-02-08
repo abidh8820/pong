@@ -56,10 +56,37 @@ void menu_draw(int idx){
     for(int i=0;i<3;i++){
     text[i].setFont(font);             // setiing the default font
     text[i].setCharacterSize(35);
-    text[i].setPosition(W_w *.5 -50, 200+i*60);
+    text[i].setPosition(W_w *.5 -100, 200+i*60);
     if(idx!=i) text[i].setFillColor(sf::Color::White);
     window.draw(text[i]);
     }
+    window.display();
+}
+void check_quit(int idx){
+    
+    if (!font.loadFromFile("arial.ttf")) {
+    }
+    sf::Text yes, no,quit;
+    quit.setFont(font);
+    quit.setString("Quit the game?");
+    quit.setFillColor(sf::Color::White);
+    quit.setPosition(W_wh-170,W_hh-150);
+    quit.setCharacterSize(70);
+    yes.setFont(font);
+    yes.setString("YES");
+    yes.setFillColor(sf::Color::White);
+    yes.setPosition(W_wh-70,W_hh-40);
+    yes.setCharacterSize(50);
+    no.setFont(font);
+    no.setString("NO");
+    no.setFillColor(sf::Color::White);
+    no.setPosition(W_wh+70,W_hh-40);
+    no.setCharacterSize(50);
+    if(idx==0)yes.setFillColor(sf::Color::Red);
+    else no.setFillColor(sf::Color::Red);
+    window.draw(quit);
+    window.draw(yes);
+    window.draw(no);
     window.display();
 }
 void draw(int p1y, int p2y, int bx, int by) {
