@@ -107,7 +107,7 @@ inline void vc() {
         } else if (iy == -1) {
             if (W_w - bx > by) {
                 p2y -= 10;
-                p2y = max(p2y, 100);
+                p2y = max(p2y, 30);
             } else {
                 int ty = by - W_w + bx;
                 if (ty < p2y) {
