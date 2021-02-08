@@ -46,7 +46,119 @@ void score2(std::string p2s) {  // prints p2's score
     score.setFillColor(sf::Color::White);
     window.draw(score);
 }
-void game_state() {}
+
+inline void vc() {
+    player1score = player2score = 0;
+    bx = W_wh;
+    by = W_hh;
+
+    bi = 5;
+    ix = -1;
+    while (true) {
+        checkclose();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            p1y -= 10;
+            p1y = max(0, p1y);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            p1y += 10;  // changing
+            p1y = min(p1y, W_h - 85);
+        }
+        if (iy == 1) {
+            if (W_w - bx > W_h - by) {
+                p2y += 10;
+                p2y = min(p2y, W_h - 100);
+            } else {
+                int ty=by+W_w-bx;
+                if (ty < p2y) {
+                    p2y -= 10;
+                    p2y = max(ty-40, p2y);
+                    p2y=max(0,p2y);
+                } 
+                else if(ty>p2y) {
+                    p2y += 10;
+                    p2y = min(p2y, ty-40);
+                    p2y=min(p2y,W_h-85);
+                }
+            }
+        } else if (iy == -1) {
+            if (W_w - bx > by) {
+                p2y -= 10;
+                p2y = max(p2y, 100);
+            } else {
+                int ty=by-W_w+bx;
+                if (ty < p2y) {
+                    p2y -= 10;
+                    p2y = max(ty-40, p2y);
+                    p2y=max(0,p2y);
+                } 
+                else if(ty>p2y){
+                    p2y += 10;
+                    p2y = min(p2y, ty-40);
+                    p2y=min(p2y,W_h-85);
+                }
+            }
+        }
+        // p2y = max(0, p2y);
+        // p2y = min(p2y, W_h - 85);
+        if (by == 0) iy *= -1;
+        if (by == W_h - 5) iy *= -1;  // changing direction in y axis
+        if (bx < 0) {                 // checking whether to add score
+            player2score++;
+            bi++;
+            bi = min(bi, 8);
+            bx = W_wh;
+            by = W_hh;
+            iy *= -1;
+        }
+        if (bx > W_w) {
+            player1score++;
+            bi++;
+            bi = min(bi, 8);
+            bx = W_wh;
+            by = W_hh;
+            iy *= -1;
+        }
+
+        if (player1score == 5 ||
+            player2score == 5) {  // if one of the players hits the score limit
+            sf::Text win;
+            if (player1score == 5)
+                win.setString("You win");
+            else
+                win.setString("Computer wins");
+            if (!font.loadFromFile("arial.ttf")) {
+            }
+            win.setFillColor(sf::Color::White);
+            win.setCharacterSize(40);
+            win.setFont(font);
+            win.setPosition(W_w * .4, W_h * .45);
+            sf::Event vnt;
+            while (true) {  // declaring the winner until the next game
+                checkclose();
+                window.clear(sf::Color::Black);
+                window.draw(win);
+                window.display();
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) break;
+            }
+            player1score = player2score = 0;
+            return;
+        }
+        if (bx >= 10 && bx <= 21 && by >= p1y && by <= p1y + 85)
+            ix = abs(ix);  // changing the direction in x axis
+        else if (bx >= W_w - 25 && bx <= W_w - 10 &&
+                 by >= p2y &&  // x axis but opposite
+                 by <= p2y + 85)
+            ix = -abs(ix);
+        bx += ix * bi, by += iy * bi;
+        by = max(by, 0);
+        by = min(by, W_h - 5);
+        window.clear(sf::Color(0, 102, 53, 255));
+        score1(to_string(player1score));
+        score2(to_string(player2score));
+        draw(p1y, p2y, bx, by);  // drawing the game state
+    }
+}
 inline void tvt() {
     player1score = player2score = 0;
     bx = W_wh;
@@ -97,8 +209,7 @@ inline void tvt() {
             bi = min(bi, 9);
             bx = W_wh;
             by = W_hh;
-            int f = rand() % 10;
-            if (f & 1) iy *= -1;
+            iy *= -1;
         }
         if (bx > W_w) {
             player1score++;
@@ -106,8 +217,7 @@ inline void tvt() {
             bi = min(bi, 9);
             bx = W_wh;
             by = W_hh;
-            int f = rand() % 10;
-            if (f & 1) iy *= -1;
+            iy *= -1;
         }
 
         if (player1score == 5 ||
@@ -147,7 +257,6 @@ inline void tvt() {
                  by <= pry + 85)
             ix = -abs(ix);
         bx += ix * bi, by += iy * bi;
-
         by = max(
             by,
             0);  // setting limit for y , thus ball doesnt go beyond the window
@@ -191,7 +300,7 @@ inline void ovo() {  // one vs one game
             bi = min(bi, 9);
             bx = W_wh;
             by = W_hh;
-            iy*=-1;
+            iy *= -1;
         }
         if (bx > W_w) {
             player1score++;
@@ -199,7 +308,7 @@ inline void ovo() {  // one vs one game
             bi = min(bi, 9);
             bx = W_wh;
             by = W_hh;
-            iy*=-1;
+            iy *= -1;
         }
         if (player1score == 5 ||
             player2score == 5) {  // if one of the players hits the score limit
@@ -273,6 +382,8 @@ int main() {
                             ovo();
                         else if (idx == 1)
                             tvt();
+                        else if (idx == 2)
+                            vc();
                     }
                 }
             }
