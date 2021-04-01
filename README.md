@@ -1,6 +1,15 @@
 # pong
 Trash project using [smfl](https://www.sfml-dev.org/)
 
+## Requirements
+
+### SFML library
+
+For Arch linux
+``` bash
+pacman -S sfml csfml
+```
+
 ## Installation
 
 ``` bash
