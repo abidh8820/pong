@@ -10,6 +10,6 @@ g++ main.o -o pong -lsfml-graphics -lsfml-window -lsfml-system
 ```
 Also you can build and run using 
 ``` bash
-sh shrun.sh
+sh srun.sh
 ```
 
